@@ -1,0 +1,146 @@
+@import '../../styles/global/colors';
+@import '../../styles/global/fonts';
+
+#events {
+    .btn-warning {
+        background-color: $color-orange;
+        color: #fff;
+    }
+
+    .format-select-box {
+        select {
+            height: 32px;
+        }
+    }
+
+    .search-input-box {
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        border: 1px solid $color-lightgray;
+        svg {
+            margin-right: 8px;
+            fill: $color-gray;
+        }
+        input {
+            flex: 1;
+            height: 32px;
+            border: none;
+            color: #212529;
+            &::placeholder {
+                color: $color-gray;
+            }
+        }
+    }
+
+    .date-filter-box {
+        margin-bottom: 50px;
+        border: 1px solid $color-lightgray;
+        border-radius: 3px;
+        .date-filter-header {
+            padding: 16px;
+            border-bottom: 1px solid $color-lightgray;
+            display: flex;
+            justify-content: space-between;
+            .date-filter-actions {
+                span {
+                    cursor: pointer;
+                    &:hover {
+                        color: $color-orange;
+                    }
+                }
+            }
+        }
+        .date-filter-row {
+            padding: 16px;
+            display: flex;
+            border-bottom: 1px solid $color-lightgray;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .track-filter-box {
+        border: 1px solid $color-lightgray;
+        border-radius: 3px;
+        .track-filter-header {
+            padding: 16px;
+            border-bottom: 1px solid $color-lightgray;
+            display: flex;
+            justify-content: space-between;
+            .track-filter-actions {
+                span {
+                    cursor: pointer;
+                    &:hover {
+                        color: $color-orange;
+                    }
+                }
+            }
+        }
+        .track-filter-row {
+            padding: 16px;
+            display: flex;
+            border-bottom: 1px solid $color-lightgray;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .tick-select {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 24px;
+        height: 24px;
+        margin-right: 16px;
+        border: 1px solid $color-lightgray;
+        border-radius: 3px;
+        cursor: pointer;
+        svg {
+            display: none;
+        }
+        &.selected {
+            background-color: $color-orange;
+            svg {
+                fill: #fff;
+                display: block;
+            }
+        }
+    }
+
+    .programday-list {
+        .programday-container {
+            margin-bottom: 24px;
+            .program-day-header {
+                display: flex;
+                padding: 16px;
+                cursor: pointer;
+                .program-day-toggler {
+                    margin-right: 16px;
+                    svg {
+                        fill: $color-orange;
+                        width: 24px;
+                        height: 24px;
+                    }
+                }
+            }
+            .programday-sessions-container {
+                border: 1px solid $color-lightgray;
+
+                .programday-session {
+                    padding: 16px;
+                    &:nth-child(2n + 1) {
+                        background-color: $color-lightgray;
+                        border-bottom: 1px solid $color-lightgray;
+                    }
+                    &:nth-child(2n) {
+                        background-color: #fff;
+                        border-bottom: 1px solid $color-lightgray;
+                    }
+                }
+            }
+        }
+    }
+}
