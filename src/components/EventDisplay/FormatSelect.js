@@ -8,7 +8,7 @@ export default function FormatSelect({ format, formatOptions, onChange, ...rest 
             </label>
             <select name="format" value={format} onChange={onChange} {...rest}>
                 {formatOptions.map((item, index) => (
-                    <option key={index} value={item}>
+                    <option key={index} value={index}>
                         {item}
                     </option>
                 ))}

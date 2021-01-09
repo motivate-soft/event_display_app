@@ -4,8 +4,8 @@ import FilterTracks from './FilterTracks';
 import SearchInput from './SearchInput';
 import FormatSelect from './FormatSelect';
 import moment from 'moment';
-import './event.scss';
 import ProgramDaysList from './ProgramDaysList';
+import './event.scss';
 
 const formatOptions = ['Session name only', 'Name and short summary', 'Session details'];
 const tracksArray = [
@@ -179,7 +179,7 @@ const getDatesOfWeek = () => {
 };
 
 export default function Event() {
-    const [format, setFormat] = useState(formatOptions[0]);
+    const [format, setFormat] = useState(0);
     const [sessions, setSessions] = useState(sessionsArray);
 
     const [datesOptions, setdatesOptions] = useState(getDatesOfWeek());
@@ -198,6 +198,7 @@ export default function Event() {
     }, [tracksOptions]);
 
     const handleFormatChange = (e) => {
+        console.log('e.target.value', e.target.value);
         setFormat(e.target.value);
     };
 
@@ -304,7 +305,7 @@ export default function Event() {
                         />
                     </div>
                     <div className="col-sm-6 col-md-8">
-                        <ProgramDaysList />
+                        <ProgramDaysList viewMode={format} />
                     </div>
                 </div>
             </div>

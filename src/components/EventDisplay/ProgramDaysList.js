@@ -4,12 +4,12 @@ import programDayData2 from './program_day2.json';
 import programDayData3 from './program_day3.json';
 import ProgramDay from './ProgramDay';
 
-export default function ProgramDaysList() {
+export default function ProgramDaysList({ viewMode }) {
     const programDayData = [programDayData1, programDayData2, programDayData3];
     return (
         <div className="programday-list">
             {programDayData.map((dayData, index) => (
-                <ProgramDay key={index} dayData={dayData} />
+                <ProgramDay key={index} dayData={dayData} viewMode={viewMode} />
             ))}
         </div>
     );
