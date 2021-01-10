@@ -26,15 +26,15 @@ export default function ProgramDay({ dayData, viewMode, onSessionsLoad }) {
         let response = daySessionsObj;
         // API fetch for day sessions
 
-        fetch('/jsonapi/node/session?jsonapi_include=true&'.concat(apiParams.getQueryString()))
-            .then((res) => res.json())
-            .then((ajaxData) => {
-                console.log('ajaxData', ajaxData);
-                response = res;
-            })
-            .catch((error) => {
-                console.log('error', error);
-            });
+        // fetch('/jsonapi/node/session?jsonapi_include=true&'.concat(apiParams.getQueryString()))
+        //     .then((res) => res.json())
+        //     .then((ajaxData) => {
+        //         console.log('ajaxData', ajaxData);
+        //         response = res;
+        //     })
+        //     .catch((error) => {
+        //         console.log('error', error);
+        //     });
 
         // Add speakers, moderators, tracks mockup field
         response.data.forEach((session) => {
