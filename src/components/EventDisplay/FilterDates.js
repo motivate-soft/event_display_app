@@ -5,18 +5,16 @@ import SelectBox from './SelectBox';
 export default function FilterDates({
     datesOptions,
     dates,
+    countPrograms,
     onClickDate,
     onClickAllDates,
     onClickNoneDates
 }) {
     console.log('datesOptions', datesOptions);
     console.log('dates', dates);
+    console.log('countPrograms', countPrograms);
 
     const isSelected = (date) => {
-        console.log('____isSelected');
-        console.log('dates', dates);
-        console.log('date', date);
-        console.log('date', dates.indexOf(date) > -1);
         return dates.indexOf(date) > -1;
     };
 
@@ -36,9 +34,14 @@ export default function FilterDates({
                 </div>
             </div>
             {datesOptions.map((date, index) => (
-                <div key={index} className="date-filter-row" onClick={() => onClickDate(date)}>
-                    <SelectBox selected={isSelected(date)} />
+                <div key={index} className="date-filter-row">
+                    <SelectBox selected={isSelected(date)} onClick={() => onClickDate(date)} />
                     {moment(date).format('dddd MMMM DD, YYYY')}
+                    <span className="ml-auto">
+                        {countPrograms &&
+                            countPrograms.length > 0 &&
+                            countPrograms.filter((item) => item.date === date)[0].count}
+                    </span>
                 </div>
             ))}
         </div>

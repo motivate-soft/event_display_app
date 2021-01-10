@@ -25,7 +25,7 @@ export const moderatorObj = {
     link: 'github.com/robert-upwork'
 };
 
-const tracksArray = [
+export const tracksArray = [
     'Business & Industry',
     'Captial Access & Economic Opportunity',
     'Diversity, Equality & Inclusion',

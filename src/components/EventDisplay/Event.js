@@ -6,162 +6,14 @@ import FormatSelect from './FormatSelect';
 import moment from 'moment';
 import ProgramDaysList from './ProgramDaysList';
 import './event.scss';
+import { tracksArray } from './../../api/mockup';
+import programDayData1 from './program_day1.json';
+import programDayData2 from './program_day2.json';
+import programDayData3 from './program_day3.json';
+import ProgramDay from './ProgramDay';
 
 const formatOptions = ['Session name only', 'Name and short summary', 'Session details'];
-const tracksArray = [
-    'Business & Industry',
-    'Captial Access & Economic Opportunity',
-    'Diversity, Equality & Inclusion',
-    'Financial Markets',
-    'Health & Medical Research'
-];
-const sessionsArray = [
-    {
-        date: 'Sunday January 03, 2021',
-        time: '9:00 AM ET',
-        title: 'Trends Reshaping Asset Management',
-        speakes: [
-            {
-                name: 'Michael Milken',
-                job: 'Chairman, Milken Institude'
-            }
-        ],
-        moderators: [
-            {
-                name: 'Raymond Dalio',
-                job: 'Founder,Chairman and Co-Chief Investment Officer Bridgewater Associates'
-            },
-            {
-                name: 'Dina',
-                job: 'Partner, Goldman sachs'
-            }
-        ],
-        tracks: [],
-        url:
-            'https://milkeninstitute.org/events/global-conference-2020/livestream/trends-reshaping-asset-management'
-    },
-    {
-        date: 'Wednesday January 06, 2021',
-        time: '10:15 AM ET',
-        title: 'Hedge Funds: Managing a Volatile Market',
-        speakes: [
-            {
-                name: 'Michael Milken',
-                job: 'Chairman, Milken Institude'
-            }
-        ],
-        moderators: [
-            {
-                name: 'Raymond Dalio',
-                job: 'Founder,Chairman and Co-Chief Investment Officer Bridgewater Associates'
-            },
-            {
-                name: 'Dina',
-                job: 'Partner, Goldman sachs'
-            }
-        ],
-        tracks: [],
-        url:
-            'https://milkeninstitute.org/events/global-conference-2020/livestream/hedge-funds-managing-volatile-market'
-    },
-    {
-        date: 'Thusday January 07, 2021',
-        time: '10:15 AM ET',
-        title: 'Racial and Economic Justice: Unlocking the Next Trillion of Economic Productivity',
-        speakes: [
-            {
-                name: 'Michael Milken',
-                job: 'Chairman, Milken Institude'
-            }
-        ],
-        moderators: [
-            {
-                name: 'Raymond Dalio',
-                job: 'Founder,Chairman and Co-Chief Investment Officer Bridgewater Associates'
-            },
-            {
-                name: 'Dina',
-                job: 'Partner, Goldman sachs'
-            }
-        ],
-        tracks: [],
-        url:
-            'https://milkeninstitute.org/events/global-conference-2020/livestream/racial-economic-justice-unlocking-next-trillion-economic-productivity'
-    },
-    {
-        date: 'Friday January 08, 2021',
-        time: '11:30 AM ET',
-        title: 'A Conversation with US Treasury Secretary Steven Mnuchin',
-        speakes: [
-            {
-                name: 'Michael Milken',
-                job: 'Chairman, Milken Institude'
-            }
-        ],
-        moderators: [
-            {
-                name: 'Raymond Dalio',
-                job: 'Founder,Chairman and Co-Chief Investment Officer Bridgewater Associates'
-            },
-            {
-                name: 'Dina',
-                job: 'Partner, Goldman sachs'
-            }
-        ],
-        tracks: [],
-        url:
-            'https://milkeninstitute.org/events/global-conference-2020/livestream/conversation-us-treasury-secretary-steven-mnuchin'
-    },
-    {
-        date: 'Saturday January 09, 2021',
-        time: '12:15 PM ET',
-        title: 'A Conversation with Jared Bernstein and Jason Furman',
-        speakes: [
-            {
-                name: 'Michael Milken',
-                job: 'Chairman, Milken Institude'
-            }
-        ],
-        moderators: [
-            {
-                name: 'Raymond Dalio',
-                job: 'Founder,Chairman and Co-Chief Investment Officer Bridgewater Associates'
-            },
-            {
-                name: 'Dina',
-                job: 'Partner, Goldman sachs'
-            }
-        ],
-        tracks: [],
-        url:
-            'https://milkeninstitute.org/events/global-conference-2020/livestream/conversation-jared-bernstein-jason-furman'
-    },
-    {
-        date: 'Monday January 11, 2021',
-        time: '1:00 PM ET',
-        title:
-            'Part 1: A Conversation with FCC Chairman Ajit Pai | Part 2: Building for the Future: Digital Infrastructure and 5G',
-        speakes: [
-            {
-                name: 'Michael Milken',
-                job: 'Chairman, Milken Institude'
-            }
-        ],
-        moderators: [
-            {
-                name: 'Raymond Dalio',
-                job: 'Founder,Chairman and Co-Chief Investment Officer Bridgewater Associates'
-            },
-            {
-                name: 'Dina',
-                job: 'Partner, Goldman sachs'
-            }
-        ],
-        tracks: [],
-        url:
-            'https://milkeninstitute.org/events/global-conference-2020/livestream/conversation-fcc-chairman-ajit-pai-building-future-digital-infrastructure'
-    }
-];
+const programDayData = [programDayData1, programDayData2, programDayData3];
 const getDatesOfWeek = () => {
     let startOfWeek = moment().startOf('week');
     let endOfWeek = moment().endOf('week');
@@ -178,24 +30,67 @@ const getDatesOfWeek = () => {
     return days;
 };
 
+let sessionsArray = [];
+
 export default function Event() {
     const [format, setFormat] = useState(0);
-    const [sessions, setSessions] = useState(sessionsArray);
+    const [sessions, setSessions] = useState([]);
 
-    const [datesOptions, setdatesOptions] = useState(getDatesOfWeek());
-    const [sessionCounts, setSessionCounts] = useState(null);
+    const [datesOptions, setdatesOptions] = useState([]);
+    const [programDays, setProgramDays] = useState([]);
     const [dates, setDates] = useState([]);
+    const [countPrograms, setCountPrograms] = useState([]);
 
-    const [tracks, setTracks] = useState([]);
     const [tracksOptions, setTracksOptions] = useState(tracksArray);
+    const [tracks, setTracks] = useState([]);
+    const [countTracks, setCountTracks] = useState([]);
 
     useEffect(() => {
-        setDates([]);
+        setProgramDays(programDayData);
+    }, []);
+
+    useEffect(() => {
+        let datesArr = programDays.map((dayObj) => dayObj.data.field_program_date);
+        let uniqueDatesArr = datesArr.filter((item, i, ar) => ar.indexOf(item) === i);
+        setdatesOptions(uniqueDatesArr);
+        let countArr = [];
+        uniqueDatesArr.map((date) => {
+            countArr.push({
+                date: date,
+                count: programDays.filter((item) => item.data.field_program_date === date).length
+            });
+        });
+        console.log('countArr', countArr);
+        setCountPrograms(countArr);
+    }, [programDays]);
+
+    useEffect(() => {
+        setDates(datesOptions);
     }, [datesOptions]);
 
     useEffect(() => {
         setTracks([]);
     }, [tracksOptions]);
+
+    useEffect(() => {
+        console.log('sessions', sessions, sessionsArray);
+        let countArr = [];
+        tracksOptions.map((track) => {
+            countArr.push({
+                track: track,
+                count: sessions.filter((item) => item.tracks.findIndex((el) => el === track) > -1)
+                    .length
+            });
+        });
+        console.log('setCountTracks', sessions, countArr);
+        setCountTracks(countArr);
+    }, [sessions]);
+
+    const getFilteredProgramDays = () => {
+        return programDays.filter(
+            (item) => dates.findIndex((el) => el === item.data.field_program_date) > -1
+        );
+    };
 
     const handleFormatChange = (e) => {
         console.log('e.target.value', e.target.value);
@@ -257,6 +152,13 @@ export default function Event() {
         setTracks([]);
     };
 
+    const handleSessionsLoad = (daySessions) => {
+        let arr = sessionsArray.concat(daySessions);
+        sessionsArray = arr;
+        console.log('handleSessionsLoad', daySessions);
+        setSessions(sessionsArray);
+    };
+
     return (
         <div id="events">
             <div className="container">
@@ -292,6 +194,7 @@ export default function Event() {
                         <FilterDates
                             datesOptions={datesOptions}
                             dates={dates}
+                            countPrograms={countPrograms}
                             onClickDate={handleClickDate}
                             onClickAllDates={handleClickAllDates}
                             onClickNoneDates={handleClickNoneDates}
@@ -299,13 +202,23 @@ export default function Event() {
                         <FilterTracks
                             tracksOptions={tracksOptions}
                             tracks={tracks}
+                            countTracks={countTracks}
                             onClickTrack={handleClickTrack}
                             onClickAllTracks={handleClickAllTracks}
                             onClickNoneTracks={handleClickNoneTracks}
                         />
                     </div>
                     <div className="col-sm-6 col-md-8">
-                        <ProgramDaysList viewMode={format} />
+                        <div className="programday-list">
+                            {getFilteredProgramDays().map((dayData, index) => (
+                                <ProgramDay
+                                    key={index}
+                                    dayData={dayData}
+                                    viewMode={format}
+                                    onSessionsLoad={handleSessionsLoad}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

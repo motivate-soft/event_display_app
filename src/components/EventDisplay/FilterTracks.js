@@ -5,17 +5,29 @@ import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 export default function FilterTracks({
     tracksOptions,
     tracks,
+    countTracks,
     onClickTrack,
     onClickAllTracks,
     onClickNoneTracks
 }) {
-    console.log('tracksOptions', tracksOptions);
-    console.log('tracks', tracks);
-
     const [expanded, setExpanded] = useState(false);
 
     const isSelected = (track) => {
         return tracks.indexOf(track) > -1;
+    };
+
+    const renderOptionRow = (track) => {
+        return (
+            <div className="track-filter-row">
+                <SelectBox selected={isSelected(track)} onClick={() => onClickTrack(track)} />
+                {track}
+                <span className="ml-auto">
+                    {countTracks &&
+                        countTracks.length > 0 &&
+                        countTracks.filter((item) => item.track === track)[0].count}
+                </span>
+            </div>
+        );
     };
 
     const renderArrow = () => {
@@ -47,26 +59,10 @@ export default function FilterTracks({
             </div>
             {tracksOptions.map((track, index) => {
                 if (index < 2) {
-                    return (
-                        <div
-                            key={index}
-                            className="track-filter-row"
-                            onClick={() => onClickTrack(track)}>
-                            <SelectBox selected={isSelected(track)} />
-                            {track}
-                        </div>
-                    );
+                    return renderOptionRow(track);
                 } else {
                     if (expanded) {
-                        return (
-                            <div
-                                key={index}
-                                className="track-filter-row"
-                                onClick={() => onClickTrack(track)}>
-                                <SelectBox selected={isSelected(track)} />
-                                {track}
-                            </div>
-                        );
+                        return renderOptionRow(track);
                     } else {
                         return null;
                     }

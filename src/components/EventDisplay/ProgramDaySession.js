@@ -43,6 +43,17 @@ export default function ProgramDaySession({ session, viewMode }) {
                             session.speakers.map((speaker, index) => (
                                 <ProfileSummary key={index} profile={speaker} />
                             ))}
+                        <h6>Tracks</h6>
+                        <p>
+                            {session.tracks &&
+                                session.tracks.map((track, index) =>
+                                    index < session.tracks.length - 1 ? (
+                                        <>{track} | </>
+                                    ) : (
+                                        <>{track}</>
+                                    )
+                                )}
+                        </p>
                     </div>
                 </Collapse>
             </>
