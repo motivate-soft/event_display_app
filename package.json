@@ -3,19 +3,27 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@babel/preset-typescript": "^7.10.4",
         "@testing-library/jest-dom": "^5.11.6",
         "@testing-library/react": "^11.2.2",
         "@testing-library/user-event": "^12.6.0",
+        "@types/jest": "^26.0.20",
+        "@types/node": "^14.14.20",
+        "@types/react": "^17.0.0",
+        "@types/react-dom": "^17.0.0",
         "axios": "^0.21.0",
         "bootstrap": "^4.5.3",
         "classnames": "^2.2.6",
         "dotenv": "^8.2.0",
+        "drupal-jsonapi-params": "^1.1.12",
+        "json-schema-to-typescript": "^9.1.1",
         "json-server": "^0.16.3",
         "lodash": "^4.17.20",
         "moment": "^2.29.1",
         "react": "^17.0.1",
         "react-bootstrap": "^1.4.0",
         "react-dom": "^17.0.1",
+        "react-fontawesome": "^1.7.1",
         "react-icons": "^4.1.0",
         "react-redux": "^7.2.2",
         "react-router-dom": "^5.2.0",
@@ -24,6 +32,7 @@
         "react-select": "^3.1.1",
         "react-slick": "^0.27.13",
         "styled-components": "^5.2.1",
+        "typescript": "^4.1.3",
         "web-vitals": "^0.2.4"
     },
     "scripts": {
@@ -54,6 +63,10 @@
         ]
     },
     "devDependencies": {
+        "@typescript-eslint/typescript-estree": "^4.11.1",
+        "typescript-eslint-language-service": "^4.1.3",
+        "@typescript-eslint/eslint-plugin": "^4.1.1",
+        "@typescript-eslint/parser": "^4.1.1",
         "eslint": "^7.16.0",
         "eslint-config-prettier": "^7.1.0",
         "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -61,7 +74,6 @@
         "eslint-plugin-react": "^7.21.5",
         "eslint-plugin-react-hooks": "^4.2.0",
         "node-sass": "^4.14.1",
-        "prettier": "^2.2.1",
-        "undefined": "^0.1.0"
+        "prettier": "^2.2.1"
     }
 }
