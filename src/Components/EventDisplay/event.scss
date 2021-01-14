@@ -13,22 +13,35 @@
         }
     }
 
-    .search-input-box {
-        padding: 8px 16px;
-        display: flex;
-        align-items: center;
-        border: 1px solid $color-lightgray;
-        svg {
-            margin-right: 8px;
-            fill: $color-gray;
+    .search-bar {
+        .search-input-box {
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            border: 1px solid $color-lightgray;
+            svg {
+                margin-right: 8px;
+                fill: $color-gray;
+            }
+            input {
+                flex: 1;
+                height: 32px;
+                border: none;
+                color: #212529;
+                &::placeholder {
+                    color: $color-gray;
+                }
+            }
         }
-        input {
-            flex: 1;
-            height: 32px;
-            border: none;
-            color: #212529;
-            &::placeholder {
-                color: $color-gray;
+        .search-terms-box {
+            display: flex;
+            justify-content: space-between;
+            span {
+                margin-right: 24px;
+                padding: 4px 8px;
+                background-color: $color-lightgray;
+            }
+            svg {
             }
         }
     }
@@ -128,9 +141,12 @@
             }
             .programday-sessions-container {
                 border: 1px solid $color-lightgray;
-
                 .programday-session {
                     padding: 16px;
+                    .btn {
+                        margin-left: 20px;
+                        min-width: 100px;
+                    }
                     &:nth-child(2n + 1) {
                         // background-color: $color-lightgray;
                         border-bottom: 1px solid $color-lightgray;

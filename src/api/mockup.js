@@ -1,4 +1,4 @@
-export const speakersData = [
+export const speakersArray = [
     {
         role: 'speaker',
         name: 'Raymond Dalio',

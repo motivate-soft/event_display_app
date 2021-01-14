@@ -6,9 +6,9 @@ interface FilterTracksProps {
     tracksOptions: Array<string>;
     tracks: Array<string>;
     countTracks: Array<any>;
-    onClickTrack: (track: string) => {};
-    onClickAllTracks: () => {};
-    onClickNoneTracks: () => {};
+    onClickTrack: (track: string) => void;
+    onClickAllTracks: () => void;
+    onClickNoneTracks: () => void;
 }
 
 const FilterTracks: React.FC<FilterTracksProps> = (props: FilterTracksProps) => {

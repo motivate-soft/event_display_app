@@ -1,112 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import daySessionsObj from './day_sessioins1.json';
 import ProgramDaySession from './ProgramDaySession';
 import ProgramDayHeader from './ProgramDayHeader';
-import { speakersData, moderatorObj, tracksArray } from './../../api/mockup';
-import ParagraphProgramDay, {
-    ParagraphProgramDayInterface
-} from '../../DataTypes/ParagraphProgramDay';
-import Loading from '../Loading';
-import { DrupalJsonApiParams } from 'drupal-jsonapi-params';
-import { NodeSessionInterface } from '../../DataTypes/NodeSession';
-import NodeDisplayList from '../NodeDisplay/NodeDisplayList';
-import ErrorDisplay from '../../Utility/ErrorDisplay';
-import Listable, { ListableInterface } from '../../DataTypes/Listable';
-import DateParts from '../../Utility/DateParts';
-
-const API_URL = 'https://live-freshdrupalmi.pantheonsite.io/';
+import NodeSession, { NodeSessionInterface } from '../../DataTypes/NodeSession';
+import { getDaySessions } from '../../api/index.js';
+import { speakersArray, moderatorObj, tracksArray } from './../../api/mockup';
 
 interface ProgramDayProps {
     field_grid_event_id: string;
     field_program_date: string;
-    viewMode: boolean;
-}
-
-interface ProgramDayState {
-    daySessions: Array<NodeSessionInterface>;
-    opened: boolean;
-    Loading: boolean;
+    terms: string[];
+    tracks: string[];
+    viewMode: number;
 }
 
 const ProgramDay: React.FC<ProgramDayProps> = (props: ProgramDayProps) => {
-    const { field_grid_event_id, field_program_date, viewMode } = props;
+    const { field_grid_event_id, field_program_date, terms, tracks, viewMode } = props;
 
-    const [daySessions, setDaySessions] = useState<Array<NodeSessionInterface>>([]);
+    const [daySessions, setDaySessions] = useState<NodeSessionInterface[]>([]);
     const [opened, setOpened] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    // const [errors, setErrors] = useState<Array<any>>([]);
 
     useEffect(() => {
-        getDaySessions();
+        fetchDaySessions();
     }, []);
 
-    const generateTracksArray = () => {
+    const generateRandomTracksArray = () => {
         let length = Math.floor(Math.random() * tracksArray.length);
         const shuffled = tracksArray.sort(() => 0.5 - Math.random());
         let arr = shuffled.slice(0, length);
-
         return arr;
     };
 
-    const getDaySessions = () => {
-        let response = daySessionsObj;
-        // API fetch for day sessions
+    const fetchDaySessions = async () => {
+        console.log('fetchDaySessions', field_grid_event_id, field_program_date);
+        let array: any[] = await getDaySessions(field_grid_event_id, field_program_date);
+        let sessionsArr: any[] = [];
+        console.log('fetchDaySessions', array);
 
-        // const { data } = this.props;
-        // const { daySessions, loading, loaded } = this.state;
-        // const DataObject = new ParagraphProgramDay(data);
-        if (daySessions.length === 0 && !loading) {
-            const apiParams = new DrupalJsonApiParams();
-            // const eventDate = DataObject.getDateObject().toISOString().split('T').shift();
-            apiParams.addInclude(['field_livestream', 'field_people', 'field_event']);
-            apiParams.addFilter('field_event.field_grid_event_id', field_grid_event_id);
-            apiParams.addFilter('field_start_end.value', field_program_date, 'STARTS_WITH');
+        // Add speakers, moderators, tracks mockup field
+        array.map((session: any) => {
+            session.field_long_description =
+                'some text goes here...some text goes here...some text goes here...some text goes here...';
+            session.field_speakers = speakersArray;
+            session.field_moderator = moderatorObj;
+            session.field_tracks = generateRandomTracksArray();
+            const item = new NodeSession(session);
+            sessionsArr.push(item);
+        });
+        console.log('fetchDaySessions', sessionsArr);
 
-            console.debug('Query Params:', apiParams.getQueryObject());
+        setDaySessions(array);
+    };
 
-            apiParams.addSort('field_start_end.value', 'asc');
-            setLoading(true);
-
-            fetch(
-                API_URL +
-                    '/jsonapi/node/session?jsonapi_include=true&'.concat(apiParams.getQueryString())
-            )
-                .then((res) => res.json())
-                .then((response) => {
-                    console.debug('back from ajax', response);
-
-                    if (response.errors) {
-                        // toReturn.errors.concat(
-                        //     response.errors.map((item) => {
-                        //         return new Error(item.detail);
-                        //     })
-                        // );
-                    }
-                    if (response.data.length === 0) {
-                        // toReturn.errors.push(Error('no session data'));
-                    }
-                    if (Array.isArray(response.data)) {
-                        console.log('response.data', response.data);
-                        // Add speakers, moderators, tracks mockup field
-                        response.data.forEach((session: any) => {
-                            session.description =
-                                'some text goes here...some text goes here...some text goes here...some text goes here...';
-                            session.speakers = speakersData;
-                            session.moderator = moderatorObj;
-                            session.tracks = generateTracksArray();
-                        });
-                        setDaySessions(response.data);
-
-                        // onSessionsLoad(daySessionsObj.data);
-                        // setDaySessions(daySessionsObj.data);
-                    }
-                })
-                .catch((reason) => {
-                    // const { errors } = this.state;
-                    // errors.push(new Error(reason));
-                    // this.setState({ errors: errors });
-                });
+    const filterByTerms = (sessions: NodeSessionInterface[]) => {
+        if (terms.length > 0) {
+            return sessions.filter(
+                (session) =>
+                    terms.findIndex((term) => session.field_long_description.includes(term)) > -1
+            );
+        } else {
+            return sessions;
         }
+    };
+
+    const filterByTracks = (sessions: NodeSessionInterface[]) => {
+        return sessions.filter(
+            (session) => session.field_tracks.filter((strack) => tracks.includes(strack)).length > 0
+        );
     };
 
     return (
@@ -117,11 +77,15 @@ const ProgramDay: React.FC<ProgramDayProps> = (props: ProgramDayProps) => {
                 onToggleOpen={() => setOpened(!opened)}
             />
             <div className="programday-sessions-container">
-                {opened
-                    ? daySessions.map((session, index) => (
-                          <ProgramDaySession key={index} session={session} viewMode={viewMode} />
-                      ))
-                    : null}
+                {opened ? (
+                    daySessions.length > 0 ? (
+                        filterByTracks(filterByTerms(daySessions)).map((session, index) => (
+                            <ProgramDaySession key={index} session={session} viewMode={viewMode} />
+                        ))
+                    ) : (
+                        <p>No elements</p>
+                    )
+                ) : null}
             </div>
         </div>
     );

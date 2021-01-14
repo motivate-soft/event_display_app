@@ -1,4 +1,4 @@
-interface ProfileInterface {
+export interface ProfileInterface {
     id: string;
     role: string;
     name: string;
@@ -8,7 +8,7 @@ interface ProfileInterface {
     link: string;
 }
 
-class Profile {
+export default class Profile implements ProfileInterface {
     id: string;
     role: string;
     name: string;
@@ -21,5 +21,3 @@ class Profile {
         Object.assign(this, incoming);
     }
 }
-
-export { Profile as default, ProfileInterface };

@@ -2,26 +2,17 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import ProfileSummary from './ProfileSummary';
 import { Collapse } from 'react-bootstrap';
-import NodeDataFactory from '../NodeDisplay/NodeDataFactory';
-import { NodeEventInterface } from '../../DataTypes/NodeEvent';
-
-interface ISession extends NodeEventInterface {
-    description: string;
-    speakers: Array<any>;
-    moderator: any;
-    tracks: Array<any>;
-}
+import { NodeSessionInterface } from '../../DataTypes/NodeSession';
 
 interface ProgramDaySessionProps {
-    session: ISession;
-    viewMode: string;
+    session: NodeSessionInterface;
+    viewMode: number;
 }
 
 const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySessionProps) => {
     const { session, viewMode } = props;
 
     const [expanded, setExpanded] = useState<boolean>(false);
-    const DataObject = NodeDataFactory(session);
 
     useEffect(() => {
         console.log('ProgramDaySession', session);
@@ -53,18 +44,18 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
                 </div>
                 <Collapse in={expanded}>
                     <div id="session-collapse-content">
-                        <p>{session.description}</p>
-                        <ProfileSummary profile={session.moderator} />
+                        <p>{session.field_long_description}</p>
+                        <ProfileSummary profile={session.field_moderator} />
                         <h6>Speakers</h6>
-                        {session.speakers &&
-                            session.speakers.map((speaker, index) => (
+                        {session.field_speakers &&
+                            session.field_speakers.map((speaker, index) => (
                                 <ProfileSummary key={index} profile={speaker} />
                             ))}
                         <h6>Tracks</h6>
                         <p>
-                            {session.tracks &&
-                                session.tracks.map((track, index) =>
-                                    index < session.tracks.length - 1 ? (
+                            {session.field_tracks &&
+                                session.field_tracks.map((track, index) =>
+                                    index < session.field_tracks.length - 1 ? (
                                         <>{track} | </>
                                     ) : (
                                         <>{track}</>
@@ -90,13 +81,13 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
                         {expanded ? 'View Less' : 'View More'}
                     </button>
                 </div>
-                <p>{session.description}</p>
+                <p>{session.field_long_description}</p>
                 <Collapse in={expanded}>
                     <div id="session-collapse-content">
-                        <ProfileSummary profile={session.moderator} />
+                        <ProfileSummary profile={session.field_moderator} />
                         <h6>Speakers</h6>
-                        {session.speakers &&
-                            session.speakers.map((speaker, index) => (
+                        {session.field_speakers &&
+                            session.field_speakers.map((speaker, index) => (
                                 <ProfileSummary key={index} profile={speaker} />
                             ))}
                     </div>
@@ -109,11 +100,11 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
         return (
             <>
                 <h5>{session.title}</h5>
-                <p>{session.description}</p>
-                <ProfileSummary profile={session.moderator} />
+                <p>{session.field_long_description}</p>
+                <ProfileSummary profile={session.field_moderator} />
                 <h6>Speakers</h6>
-                {session.speakers &&
-                    session.speakers.map((speaker, index) => (
+                {session.field_speakers &&
+                    session.field_speakers.map((speaker, index) => (
                         <ProfileSummary key={index} profile={speaker} />
                     ))}
             </>
@@ -122,12 +113,14 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
 
     const renderSessionContent = () => {
         console.log('viewMode', viewMode);
-        if (parseInt(viewMode) === 0) {
-            return renderTitleOnly();
-        } else if (parseInt(viewMode) === 1) {
-            return renderTitleSummary();
-        } else {
-            return renderDetail();
+
+        switch (viewMode) {
+            case 1:
+                return renderTitleSummary();
+            case 2:
+                return renderDetail();
+            default:
+                return renderTitleOnly();
         }
     };
 

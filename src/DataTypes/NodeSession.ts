@@ -1,84 +1,42 @@
-import ContentDatatype, { ContentDatatypeInterface } from './ContentDatatype';
-import TextField from '../Fields/TextField';
-import { EventInterface } from './Event';
-import { PeopleInterface } from './People';
-
 export interface NodeSessionFieldStartEndInterface {
     value: string;
     end_value: string;
 }
 
-export class NodeSessionFieldStartEnd implements NodeSessionFieldStartEndInterface {
-    start: Date;
-    end: Date;
-
-    constructor(incoming: NodeSessionFieldStartEndInterface) {
-        console.debug('NodeSessionFieldStartEnd', incoming);
-        if (incoming.value) {
-            this.start = new Date(incoming.value);
-        }
-        if (incoming.end_value) {
-            this.end = new Date(incoming.end_value);
-        }
-        console.debug('NodeSessionFieldStartEnd', this);
-    }
-
-    get value(): string {
-        return this.start.toISOString();
-    }
-
-    get value_end(): string {
-        return this.end.toISOString();
-    }
-
-    getStartDateObject(): Date {
-        return this.start;
-    }
-
-    getEndDateObject(): Date {
-        return this.end;
-    }
-}
-
-export interface NodeSessionInterface extends ContentDatatypeInterface {
-    field_long_description: TextField;
+export interface NodeSessionInterface {
+    title: string;
+    field_long_description: string;
     field_private: boolean;
     field_short_summary: string;
     field_start_end: NodeSessionFieldStartEndInterface;
     field_url: string;
-    field_event: EventInterface;
-    field_people: Array<PeopleInterface>;
+    field_event: NodeEventInterface;
+    field_people: Array<any>;
+    field_speakers: Array<any>;
+    field_moderator: any;
+    field_tracks: Array<any>;
 }
 
-export class NodeSession extends ContentDatatype implements NodeSessionInterface {
-    field_long_description: TextField;
+export interface NodeEventInterface {
+    field_event_date: string;
+    field_grid_event_id: string;
+    field_name_short: string;
+}
+
+export default class NodeSession implements NodeSessionInterface {
+    title: string;
+    field_long_description: string;
     field_private: boolean;
     field_short_summary: string;
-    _field_start_end: NodeSessionFieldStartEnd;
+    field_start_end: NodeSessionFieldStartEndInterface;
     field_url: string;
-    field_event: EventInterface;
-    field_people: Array<PeopleInterface>;
+    field_event: any;
+    field_speakers: Array<any>;
+    field_moderator: any;
+    field_people: Array<any>;
+    field_tracks: Array<any>;
 
-    constructor(props) {
-        super(props);
+    constructor(props: NodeSessionInterface) {
         Object.assign(this, props);
     }
-
-    hasData(): boolean {
-        return this.status !== undefined;
-    }
-
-    get field_start_end(): NodeSessionFieldStartEndInterface {
-        return this._field_start_end;
-    }
-
-    set field_start_end(incoming: NodeSessionFieldStartEndInterface) {
-        this._field_start_end = new NodeSessionFieldStartEnd(incoming);
-    }
-
-    getStartEndObject(): NodeSessionFieldStartEnd {
-        return this._field_start_end;
-    }
 }
-
-export default NodeSession;

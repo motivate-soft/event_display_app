@@ -1,3 +1,4 @@
 {
-    "/api/v1.0/*": "/$1"
+    "/jsonapi/node/session?jsonapi_include=true&filter[field_event.field_grid_event_id]=gc20&filter[field_start_end.value][condition][path]=field_start_end.value&filter[field_start_end.value][condition][value]=*&filter[field_start_end.value][condition][operator]=STARTS_WITH&include=field_livestream,field_people,field_event&sort=field_start_end.value": "/$1",
+    "/jsonapi/paragraph/program_day/*?jsonapi_include=true": "/$1"
 }
