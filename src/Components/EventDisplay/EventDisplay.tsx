@@ -16,7 +16,6 @@ const formatOptions = ['Session name only', 'Name and short summary', 'Session d
 const getDatesOfWeek = () => {
     let startOfWeek = moment().startOf('week');
     let endOfWeek = moment().endOf('week');
-
     let days = [];
     let day = startOfWeek;
 
@@ -25,19 +24,24 @@ const getDatesOfWeek = () => {
         day = day.clone().add(1, 'd');
     }
 
-    // console.log('days', days);
     return days;
 };
 
-let sessionsArray: Array<any> = [];
+const sessionsArray: Array<any> = [];
 
 const EVENT_ID = '49a2e35a-e287-41d9-9301-45fc41da8f13';
 
-interface EventProps {
+const PROGRAM_DAYS = [
+    '57dcce13-a6b1-49a5-b2d6-a49caa07b591',
+    '64750330-ea5f-45c1-91a5-5048cd0886cf',
+    '7945ca47-ef92-41aa-8ce3-bb1252fdbd6b'
+];
+
+interface EventDisplayProps {
     event_id: string;
 }
 
-const EventDisplay: React.FC<EventProps> = (props: EventProps) => {
+const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => {
     const [format, setFormat] = useState<number>(0);
     const [sessions, setSessions] = useState([]);
     const [programDays, setProgramDays] = useState<NodeProgramDay[]>([]);
@@ -96,19 +100,15 @@ const EventDisplay: React.FC<EventProps> = (props: EventProps) => {
     // }, [sessions]);
 
     const fetchProgramDays = async () => {
-        let day_ids = [
-            '57dcce13-a6b1-49a5-b2d6-a49caa07b591',
-            '64750330-ea5f-45c1-91a5-5048cd0886cf',
-            '7945ca47-ef92-41aa-8ce3-bb1252fdbd6b'
-        ];
-        let day1 = await getProgramDay(day_ids[0]);
-        let day2 = await getProgramDay(day_ids[1]);
-        let day3 = await getProgramDay(day_ids[2]);
+        let array: any[] = [];
+        PROGRAM_DAYS.map((id) => {
+            array.push(getProgramDay(id));
+        });
+        let res = await Promise.all(array);
 
-        let array: any = [day1, day2, day3];
         let dayArray: any = [];
 
-        array.map((item: any) => {
+        res.map((item: any) => {
             dayArray.push(new NodeProgramDay(item.data));
         });
         console.log('fetchProgramDays', dayArray);

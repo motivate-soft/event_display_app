@@ -34,13 +34,15 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
             <>
                 <div className="d-flex align-items-center justify-content-between mb-4">
                     <h5>{session.title}</h5>
-                    <button
-                        className="btn btn-outline-primary"
-                        aria-controls="session-collapse-content"
-                        aria-expanded={expanded}
-                        onClick={() => setExpanded(!expanded)}>
-                        {expanded ? 'View Less' : 'View More'}
-                    </button>
+                    <div>
+                        <button
+                            className="btn btn-outline-primary"
+                            aria-controls="session-collapse-content"
+                            aria-expanded={expanded}
+                            onClick={() => setExpanded(!expanded)}>
+                            {expanded ? 'View Less' : 'View More'}
+                        </button>
+                    </div>
                 </div>
                 <Collapse in={expanded}>
                     <div id="session-collapse-content">
@@ -73,13 +75,15 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
             <>
                 <div className="d-flex align-items-center justify-content-between mb-4">
                     <h5>{session.title}</h5>
-                    <button
-                        className="btn btn-outline-primary"
-                        aria-controls="session-collapse-content"
-                        aria-expanded={expanded}
-                        onClick={() => setExpanded(!expanded)}>
-                        {expanded ? 'View Less' : 'View More'}
-                    </button>
+                    <div>
+                        <button
+                            className="btn btn-outline-primary"
+                            aria-controls="session-collapse-content"
+                            aria-expanded={expanded}
+                            onClick={() => setExpanded(!expanded)}>
+                            {expanded ? 'View Less' : 'View More'}
+                        </button>
+                    </div>
                 </div>
                 <p>{session.field_long_description}</p>
                 <Collapse in={expanded}>
