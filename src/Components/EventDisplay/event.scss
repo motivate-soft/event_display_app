@@ -41,8 +41,6 @@
                 padding: 4px 8px;
                 background-color: $color-lightgray;
             }
-            svg {
-            }
         }
     }
 
@@ -157,10 +155,10 @@
                     }
                     .profile-summary {
                         margin-bottom: 20px;
-                        .avatar-container {
+                        .avatar-wrapper {
                             position: relative;
                             padding-top: 100%;
-                            .img-thumbnail {
+                            img {
                                 position: absolute;
                                 top: 0;
                                 object-fit: cover;
@@ -180,6 +178,18 @@
     .seperator {
         height: 10px;
         background-color: $color-lightblue;
+    }
+    .avatar-wrapper {
+        position: relative;
+        padding-top: 100%;
+        img {
+            position: absolute;
+            top: 0;
+            object-fit: cover;
+            object-position: center;
+            width: 100%;
+            height: 100%;
+        }
     }
     .profile-social-links {
         a {

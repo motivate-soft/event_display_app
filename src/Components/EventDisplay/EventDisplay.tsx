@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import FilterDates from './FilterDates';
 import FilterTracks from './FilterTracks';
-import SearchInput from './SearchInput';
 import FormatSelect from './FormatSelect';
 import moment from 'moment';
-import './event.scss';
-import { tracksArray } from '../../api/mockup';
 import ProgramDay from './ProgramDay';
+import { tracksArray } from '../../api/mockup';
 import { getProgramDay } from '../../api/index.js';
 import NodeProgramDay from '../../DataTypes/NodeProgramDay';
 import SearchBar from './SearchBar';
-import { Col, Container, Row } from 'react-bootstrap';
+import './event.scss';
 
 const formatOptions = ['Session name only', 'Name and short summary', 'Session details'];
 const getDatesOfWeek = () => {
@@ -101,14 +100,15 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
 
     const fetchProgramDays = async () => {
         let array: any[] = [];
+        let resArray: any[] = [];
+        let dayArray: any = [];
+
         PROGRAM_DAYS.map((id) => {
             array.push(getProgramDay(id));
         });
-        let res = await Promise.all(array);
+        resArray = await Promise.all(array);
 
-        let dayArray: any = [];
-
-        res.map((item: any) => {
+        resArray.map((item: any) => {
             dayArray.push(new NodeProgramDay(item.data));
         });
         console.log('fetchProgramDays', dayArray);
@@ -120,6 +120,7 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
             (item) => dates.findIndex((el) => el === item.field_program_date) > -1
         );
     };
+
     /**
      * Format Change handler
      */
@@ -136,7 +137,7 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
     };
 
     /**
-     *  terms search handlers
+     *  terms filter handlers
      */
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTerm(e.target.value);

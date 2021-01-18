@@ -4,6 +4,7 @@ import ProgramDayHeader from './ProgramDayHeader';
 import NodeSession, { NodeSessionInterface } from '../../DataTypes/NodeSession';
 import { getDaySessions } from '../../api/index.js';
 import { speakersArray, moderatorObj, tracksArray } from './../../api/mockup';
+import moment from 'moment';
 
 interface ProgramDayProps {
     field_grid_event_id: string;
@@ -32,13 +33,14 @@ const ProgramDay: React.FC<ProgramDayProps> = (props: ProgramDayProps) => {
     };
 
     const fetchDaySessions = async () => {
-        console.log('fetchDaySessions', field_grid_event_id, field_program_date);
-        let array: any[] = await getDaySessions(field_grid_event_id, field_program_date);
+        let res: any = await getDaySessions(
+            field_grid_event_id,
+            moment(field_program_date).format('YYYY-MM-DD')
+        );
         let sessionsArr: any[] = [];
-        console.log('fetchDaySessions', array);
 
         // Add speakers, moderators, tracks mockup field
-        array.map((session: any) => {
+        res.data.map((session: any) => {
             session.field_long_description =
                 'some text goes here...some text goes here...some text goes here...some text goes here...';
             session.field_speakers = speakersArray;
@@ -49,7 +51,7 @@ const ProgramDay: React.FC<ProgramDayProps> = (props: ProgramDayProps) => {
         });
         console.log('fetchDaySessions', sessionsArr);
 
-        setDaySessions(array);
+        setDaySessions(sessionsArr);
     };
 
     const filterByTerms = (sessions: NodeSessionInterface[]) => {

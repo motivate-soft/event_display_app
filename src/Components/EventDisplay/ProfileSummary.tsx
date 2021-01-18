@@ -13,7 +13,7 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = (props: ProfileSummaryProp
         <div className="profile-summary">
             <div className="row">
                 <div className="cole-sm-3 col-lg-2">
-                    <div className="avatar-container">
+                    <div className="avatar-wrapper">
                         <img
                             src={profile.avatar}
                             alt={profile.name}
