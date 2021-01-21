@@ -3,29 +3,62 @@
 
 #events {
     .btn-warning {
+        padding: 7px 14px;
         background-color: $color-orange;
         color: #fff;
+        font-size: 14px;
+        border-color: $color-orange;
+        border-radius: 0;
+        &:hover {
+            background-color: $color-darkorange;
+        }
     }
 
     .format-select-box {
+        label {
+            padding-top: 7px;
+            margin-bottom: 0;
+            text-align: right;
+        }
         select {
+            font-size: 14px;
             height: 32px;
+            &:hover,
+            &:active,
+            &:focus {
+                box-shadow: none;
+                outline: none;
+            }
         }
     }
 
     .search-bar {
+        h5 {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 700;
+        }
         .search-input-box {
-            padding: 8px 16px;
             display: flex;
             align-items: center;
             border: 1px solid $color-lightgray;
             svg {
-                margin-right: 8px;
                 fill: $color-gray;
+                display: block;
+                position: absolute;
+                margin: 8px;
+                z-index: 3;
+                width: 16px;
             }
             input {
+                padding-left: 33px;
+                border-color: #dbdbdb;
+                color: #777;
+                font: 14px Arial, sans-serif;
+                border-radius: 0;
+                box-shadow: none;
                 flex: 1;
-                height: 32px;
+                height: 34px;
                 border: none;
                 color: #212529;
                 &::placeholder {
@@ -39,62 +72,57 @@
             span {
                 margin-right: 24px;
                 padding: 4px 8px;
-                background-color: $color-lightgray;
+                background-color: #f1f5f7;
+                border: 1px solid $color-gray;
+                border-radius: 4px;
+                svg {
+                    fill: #3e4d5c;
+                }
             }
         }
     }
 
-    .date-filter-box {
+    .filter-box {
         margin-bottom: 50px;
         border: 1px solid $color-lightgray;
         border-radius: 3px;
-        .date-filter-header {
-            padding: 16px;
+        background-color: #fff;
+        border: 1px solid #b9b9b9;
+        .filter-header {
+            padding: 10px;
             border-bottom: 1px solid $color-lightgray;
             display: flex;
             justify-content: space-between;
-            .date-filter-actions {
+            h6 {
+                margin-bottom: 0;
+                font-weight: bold;
+                font-size: 20px;
+            }
+            .filter-actions {
                 span {
                     cursor: pointer;
                     &:hover {
+                        text-decoration: underline;
                         color: $color-orange;
                     }
                 }
             }
         }
-        .date-filter-row {
-            padding: 16px;
+        .filter-row {
+            padding: 10px;
             display: flex;
-            border-bottom: 1px solid $color-lightgray;
-            &:last-child {
-                border-bottom: none;
+            border-top: 1px solid $color-lightgray;
+            font-size: 14px;
+            font-weight: bold;
+            span {
+                margin-left: 10px;
             }
         }
-    }
-
-    .track-filter-box {
-        border: 1px solid $color-lightgray;
-        border-radius: 3px;
-        .track-filter-header {
-            padding: 16px;
-            border-bottom: 1px solid $color-lightgray;
-            display: flex;
-            justify-content: space-between;
-            .track-filter-actions {
-                span {
-                    cursor: pointer;
-                    &:hover {
-                        color: $color-orange;
-                    }
-                }
-            }
-        }
-        .track-filter-row {
-            padding: 16px;
-            display: flex;
-            border-bottom: 1px solid $color-lightgray;
-            &:last-child {
-                border-bottom: none;
+        .collapse-toggler {
+            svg {
+                width: 22px;
+                height: 22px;
+                fill: #3e4d5c;
             }
         }
     }
@@ -103,20 +131,24 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 24px;
-        height: 24px;
-        margin-right: 16px;
-        border: 1px solid $color-lightgray;
-        border-radius: 3px;
+        width: 22px;
+        min-width: 22px;
+        height: 22px;
+        margin-right: 14px;
         cursor: pointer;
+        background-color: #fff;
+        border: 1px solid $color-lightgray;
         svg {
             display: none;
         }
         &.selected {
             background-color: $color-orange;
+            border: none;
             svg {
                 fill: #fff;
                 display: block;
+                width: 12px;
+                height: 12px;
             }
         }
     }
@@ -126,10 +158,14 @@
             margin-bottom: 24px;
             .program-day-header {
                 display: flex;
-                padding: 16px;
+                padding: 10px 0;
                 cursor: pointer;
+                h4 {
+                    font-size: 20px;
+                    font-weight: bold;
+                }
                 .program-day-toggler {
-                    margin-right: 16px;
+                    margin-right: 10px;
                     svg {
                         fill: $color-orange;
                         width: 24px;
@@ -141,25 +177,36 @@
                 border: 1px solid $color-lightgray;
                 .programday-session {
                     padding: 16px;
+                    border-top: 1px solid $color-lightgray;
+                    background-color: #fff;
+                    h5 {
+                        font-size: 15px;
+                        font-weight: bold;
+                    }
                     .btn {
                         margin-left: 20px;
                         min-width: 120px;
-                    }
-                    &:nth-child(2n + 1) {
-                        // background-color: $color-lightgray;
-                        border-bottom: 1px solid $color-lightgray;
-                    }
-                    &:nth-child(2n) {
-                        background-color: #fff;
-                        border-bottom: 1px solid $color-lightgray;
+                        padding: 0;
+                        color: $color-orange;
+                        font-size: 16px;
+                        &:hover,
+                        &:focus,
+                        &:active {
+                            outline: none;
+                            box-shadow: none;
+                            text-decoration: underline;
+                            color: $color-darkorange;
+                        }
                     }
                     .profile-summary {
                         margin-bottom: 20px;
+                        font-size: 15px;
                         .avatar-wrapper {
+                            margin: auto;
+                            width: 80px;
+                            height: 80px;
                             position: relative;
-                            padding-top: 100%;
                             img {
-                                position: absolute;
                                 top: 0;
                                 object-fit: cover;
                                 object-position: center;
@@ -167,39 +214,13 @@
                                 height: 100%;
                             }
                         }
+                        a {
+                            display: block;
+                            margin-bottom: 10px;
+                            color: $color-orange;
+                        }
                     }
                 }
-            }
-        }
-    }
-}
-
-#profile-container {
-    .seperator {
-        height: 10px;
-        background-color: $color-lightblue;
-    }
-    .avatar-wrapper {
-        position: relative;
-        padding-top: 100%;
-        img {
-            position: absolute;
-            top: 0;
-            object-fit: cover;
-            object-position: center;
-            width: 100%;
-            height: 100%;
-        }
-    }
-    .profile-social-links {
-        a {
-            svg {
-                fill: $color-lightblue;
-                width: 24px;
-                height: 24px;
-            }
-            &:first-child {
-                margin-right: 16px;
             }
         }
     }

@@ -1,5 +1,5 @@
 import EventDisplay from './Components/EventDisplay/EventDisplay';
-import ProfileDetail from './Components/EventDisplay/ProfileDetail';
+import ProfileDetail from './Components/Profile/ProfileDetail';
 
 const routes = [
     { path: '/', name: 'Event', component: EventDisplay },

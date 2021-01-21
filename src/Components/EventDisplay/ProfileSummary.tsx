@@ -12,16 +12,16 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = (props: ProfileSummaryProp
     return (
         <div className="profile-summary">
             <div className="row">
-                <div className="cole-sm-3 col-lg-2">
+                <div className="cole-sm-6 col-lg-3">
                     <div className="avatar-wrapper">
                         <img
                             src={profile.avatar}
                             alt={profile.name}
-                            className="img-fluid img-thumbnail rounded-circle"
+                            className="img-fluid rounded-circle"
                         />
                     </div>
                 </div>
-                <div className="cole-sm-9 col-lg-10">
+                <div className="col-sm-6 col-lg-9">
                     {/* <a href={`//${profile.link}`} target="_blank" rel="noreferrer"> */}
                     <Link to="/profile">{profile.name}</Link>
                     <h6>{profile.job}</h6>

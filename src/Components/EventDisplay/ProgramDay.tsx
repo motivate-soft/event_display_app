@@ -12,10 +12,18 @@ interface ProgramDayProps {
     terms: string[];
     tracks: string[];
     viewMode: number;
+    onSessionsLoad: (sessions: Array<any>) => void;
 }
 
 const ProgramDay: React.FC<ProgramDayProps> = (props: ProgramDayProps) => {
-    const { field_grid_event_id, field_program_date, terms, tracks, viewMode } = props;
+    const {
+        field_grid_event_id,
+        field_program_date,
+        terms,
+        tracks,
+        viewMode,
+        onSessionsLoad
+    } = props;
 
     const [daySessions, setDaySessions] = useState<NodeSessionInterface[]>([]);
     const [opened, setOpened] = useState<boolean>(false);
@@ -52,6 +60,7 @@ const ProgramDay: React.FC<ProgramDayProps> = (props: ProgramDayProps) => {
         console.log('fetchDaySessions', sessionsArr);
 
         setDaySessions(sessionsArr);
+        onSessionsLoad(sessionsArr);
     };
 
     const filterByTerms = (sessions: NodeSessionInterface[]) => {
@@ -78,17 +87,17 @@ const ProgramDay: React.FC<ProgramDayProps> = (props: ProgramDayProps) => {
                 opened={opened}
                 onToggleOpen={() => setOpened(!opened)}
             />
-            <div className="programday-sessions-container">
-                {opened ? (
-                    daySessions.length > 0 ? (
-                        filterByTracks(filterByTerms(daySessions)).map((session, index) => (
+            {opened ? (
+                daySessions.length > 0 ? (
+                    <div className="programday-sessions-container">
+                        {filterByTracks(filterByTerms(daySessions)).map((session, index) => (
                             <ProgramDaySession key={index} session={session} viewMode={viewMode} />
-                        ))
-                    ) : (
-                        <p>No elements</p>
-                    )
-                ) : null}
-            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p>No elements</p>
+                )
+            ) : null}
         </div>
     );
 };

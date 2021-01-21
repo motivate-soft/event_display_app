@@ -36,7 +36,7 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
                     <h5>{session.title}</h5>
                     <div>
                         <button
-                            className="btn btn-outline-primary"
+                            className="btn"
                             aria-controls="session-collapse-content"
                             aria-expanded={expanded}
                             onClick={() => setExpanded(!expanded)}>
@@ -47,8 +47,9 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
                 <Collapse in={expanded}>
                     <div id="session-collapse-content">
                         <p>{session.field_long_description}</p>
+                        <h5>Moderator</h5>
                         <ProfileSummary profile={session.field_moderator} />
-                        <h6>Speakers</h6>
+                        <h5>Speakers</h5>
                         {session.field_speakers &&
                             session.field_speakers.map((speaker, index) => (
                                 <ProfileSummary key={index} profile={speaker} />
@@ -77,7 +78,7 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
                     <h5>{session.title}</h5>
                     <div>
                         <button
-                            className="btn btn-outline-primary"
+                            className="btn"
                             aria-controls="session-collapse-content"
                             aria-expanded={expanded}
                             onClick={() => setExpanded(!expanded)}>
@@ -88,8 +89,9 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
                 <p>{session.field_long_description}</p>
                 <Collapse in={expanded}>
                     <div id="session-collapse-content">
+                        <h5>Moderator</h5>
                         <ProfileSummary profile={session.field_moderator} />
-                        <h6>Speakers</h6>
+                        <h5>Speakers</h5>
                         {session.field_speakers &&
                             session.field_speakers.map((speaker, index) => (
                                 <ProfileSummary key={index} profile={speaker} />
@@ -105,8 +107,9 @@ const ProgramDaySession: React.FC<ProgramDaySessionProps> = (props: ProgramDaySe
             <>
                 <h5>{session.title}</h5>
                 <p>{session.field_long_description}</p>
+                <h5>Moderator</h5>
                 <ProfileSummary profile={session.field_moderator} />
-                <h6>Speakers</h6>
+                <h5>Speakers</h5>
                 {session.field_speakers &&
                     session.field_speakers.map((speaker, index) => (
                         <ProfileSummary key={index} profile={speaker} />

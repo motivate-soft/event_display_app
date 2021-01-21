@@ -11,7 +11,7 @@ const SelectBox: React.FC<SelectBoxProps> = (props: SelectBoxProps) => {
     const { selected, onClick, ...rest } = props;
     return (
         <div
-            className={classnames('d-flex', 'tick-select', { selected: selected })}
+            className={classnames('tick-select', { selected: selected })}
             onClick={onClick}
             {...rest}>
             <FaCheck />

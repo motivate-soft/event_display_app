@@ -27,23 +27,25 @@ const FilterTracks: React.FC<FilterTracksProps> = (props: FilterTracksProps) => 
         return tracks.indexOf(track) > -1;
     };
 
-    const renderOptionRow = (track: string) => {
+    const renderOptionRow = (key: number, track: string) => {
         return (
-            <div className="track-filter-row">
+            <div key={key} className="filter-row">
                 <SelectBox selected={isSelected(track)} onClick={() => onClickTrack(track)} />
-                {track}
-                <span className="ml-auto">
-                    {countTracks &&
-                        countTracks.length > 0 &&
-                        countTracks.filter((item) => item.track === track)[0].count}
-                </span>
+                <div className="d-flex flex-grow-1 justify-content-between">
+                    {track}
+                    <span>
+                        {countTracks &&
+                            countTracks.length > 0 &&
+                            countTracks.filter((item) => item.track === track)[0].count}
+                    </span>
+                </div>
             </div>
         );
     };
 
     const renderArrow = () => {
         return (
-            <div className="d-flex justify-content-center align-items-center py-3">
+            <div className="d-flex justify-content-center align-items-center pt-2 pb-3 collapse-toggler">
                 {expanded ? (
                     <FaChevronUp onClick={() => setExpanded(false)} />
                 ) : (
@@ -54,10 +56,10 @@ const FilterTracks: React.FC<FilterTracksProps> = (props: FilterTracksProps) => 
     };
 
     return (
-        <div className="track-filter-box">
-            <div className="track-filter-header">
+        <div className="filter-box">
+            <div className="filter-header">
                 <h6>Tracks</h6>
-                <div className="track-filter-actions">
+                <div className="filter-actions">
                     <span onClick={onClickAllTracks} className="filter-all">
                         Click all
                     </span>
@@ -70,10 +72,10 @@ const FilterTracks: React.FC<FilterTracksProps> = (props: FilterTracksProps) => 
             </div>
             {tracksOptions.map((track, index) => {
                 if (index < 2) {
-                    return renderOptionRow(track);
+                    return renderOptionRow(index, track);
                 } else {
                     if (expanded) {
-                        return renderOptionRow(track);
+                        return renderOptionRow(index, track);
                     } else {
                         return null;
                     }

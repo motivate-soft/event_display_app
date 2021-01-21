@@ -5,28 +5,14 @@ import FilterTracks from './FilterTracks';
 import FormatSelect from './FormatSelect';
 import moment from 'moment';
 import ProgramDay from './ProgramDay';
-import { tracksArray } from '../../api/mockup';
 import { getProgramDay } from '../../api/index.js';
 import NodeProgramDay from '../../DataTypes/NodeProgramDay';
 import SearchBar from './SearchBar';
 import './event.scss';
 
 const formatOptions = ['Session name only', 'Name and short summary', 'Session details'];
-const getDatesOfWeek = () => {
-    let startOfWeek = moment().startOf('week');
-    let endOfWeek = moment().endOf('week');
-    let days = [];
-    let day = startOfWeek;
 
-    while (day <= endOfWeek) {
-        days.push(day.toDate());
-        day = day.clone().add(1, 'd');
-    }
-
-    return days;
-};
-
-const sessionsArray: Array<any> = [];
+let sessionsArray: any[] = [];
 
 const EVENT_ID = '49a2e35a-e287-41d9-9301-45fc41da8f13';
 
@@ -52,9 +38,13 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
     const [dates, setDates] = useState<string[]>([]);
     const [countPrograms, setCountPrograms] = useState<any[]>([]);
 
-    const [tracksOptions, setTracksOptions] = useState<string[]>(tracksArray);
+    const [tracksOptions, setTracksOptions] = useState<string[]>([]);
     const [tracks, setTracks] = useState<any[]>([]);
     const [countTracks, setCountTracks] = useState<any[]>([]);
+
+    useEffect(() => {
+        console.log('_useEffect');
+    });
 
     useEffect(() => {
         fetchProgramDays();
@@ -72,7 +62,6 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
                 count: programDays.filter((item) => item.field_program_date === date).length
             });
         });
-        console.log('countArr', countArr);
         setCountPrograms(countArr);
     }, [programDays]);
 
@@ -81,22 +70,35 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
     }, [datesOptions]);
 
     useEffect(() => {
+        let countArr: any[] = [];
+        tracksOptions.map((track) => {
+            countArr.push({
+                track: track,
+                count: sessions.filter((item) => item.field_tracks.indexOf(track) > -1).length
+            });
+        });
+        console.log('setCountTracks', sessions, countArr);
+        setCountTracks(countArr);
+    }, [tracksOptions, sessions]);
+
+    useEffect(() => {
         setTracks(tracksOptions);
     }, [tracksOptions]);
 
-    // useEffect(() => {
-    //     console.log('sessions', sessions, sessionsArray);
-    //     let countArr = [];
-    //     tracksOptions.map((track) => {
-    //         countArr.push({
-    //             track: track,
-    //             count: sessions.filter((item) => item.tracks.findIndex((el) => el === track) > -1)
-    //                 .length
-    //         });
-    //     });
-    //     console.log('setCountTracks', sessions, countArr);
-    //     setCountTracks(countArr);
-    // }, [sessions]);
+    useEffect(() => {
+        console.log('terms', terms, terms.length);
+        if (terms.length > 0) {
+            let arr = sessionsArray.filter(
+                (session) =>
+                    terms.findIndex((term) => session.field_long_description.indexOf(term) > -1) >
+                    -1
+            );
+            console.log('sessions array filtered by terms', arr);
+            setSessions(arr);
+        } else {
+            setSessions(sessionsArray);
+        }
+    }, [terms]);
 
     const fetchProgramDays = async () => {
         let array: any[] = [];
@@ -111,7 +113,6 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
         resArray.map((item: any) => {
             dayArray.push(new NodeProgramDay(item.data));
         });
-        console.log('fetchProgramDays', dayArray);
         setProgramDays(dayArray);
     };
 
@@ -137,7 +138,7 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
     };
 
     /**
-     *  terms filter handlers
+     *  Terms filter handlers
      */
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTerm(e.target.value);
@@ -145,18 +146,22 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
 
     const handleInputPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key == 'Enter') {
-            terms.push(term);
+            if (terms.indexOf(term) > -1) return;
+            let arr = [...terms];
+            arr.push(term);
             setTerm('');
-            setTerms(terms);
+            setTerms(arr);
         }
     };
 
     const handleRemoveTerm = (term: string) => {
-        return terms.filter((item) => item !== term);
+        let array = terms.filter((item) => item !== term);
+        setTerms(array);
     };
 
     const handleRemoveAllTerms = () => {
         setTerms([]);
+        setSessions(sessionsArray);
     };
 
     /**
@@ -206,12 +211,22 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
         setTracks([]);
     };
 
-    // const handleSessionsLoad = (daySessions) => {
-    //     let arr = sessionsArray.concat(daySessions);
-    //     sessionsArray = arr;
-    //     console.log('handleSessionsLoad', daySessions);
-    //     setSessions(sessionsArray);
-    // };
+    const handleSessionsLoad = (daySessions: any[]) => {
+        let arr = sessionsArray.concat(daySessions);
+        sessionsArray = arr;
+        console.log('handleSessionsLoad', sessionsArray);
+        setSessions(sessionsArray);
+
+        let tracksArr: any = [];
+        sessionsArray.map((session) => {
+            session.field_tracks.map((track: string) => {
+                if (tracksArr.indexOf(track) < 0) {
+                    tracksArr.push(track);
+                }
+            });
+        });
+        setTracksOptions(tracksArr);
+    };
 
     return (
         <div id="events">
@@ -222,7 +237,7 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
                             HIDE FILTERS
                         </button>
                     </Col>
-                    <Col sm={7} md={6}>
+                    <Col sm={7} md={6} className="form-horizontal">
                         <FormatSelect
                             formatOptions={formatOptions}
                             format={format}
@@ -238,13 +253,14 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
                 <SearchBar
                     term={term}
                     terms={terms}
+                    count={sessions.length}
                     onInputChange={handleInputChange}
                     onInputPress={handleInputPress}
                     onRemoveTerm={handleRemoveTerm}
                     onRemoveAllTerms={handleRemoveAllTerms}
                 />
                 <Row>
-                    <Col sm={6} md={4}>
+                    <Col sm={6} md={4} lg={3}>
                         <FilterDates
                             datesOptions={datesOptions}
                             dates={dates}
@@ -262,7 +278,7 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
                             onClickNoneTracks={handleClickNoneTracks}
                         />
                     </Col>
-                    <Col sm={6} md={8}>
+                    <Col sm={6} md={8} lg={9} style={{ marginTop: -67 }}>
                         <div className="programday-list">
                             {getFilteredProgramDays().map((item, index) => (
                                 <ProgramDay
@@ -272,7 +288,7 @@ const EventDisplay: React.FC<EventDisplayProps> = (props: EventDisplayProps) => 
                                     terms={terms}
                                     tracks={tracks}
                                     viewMode={format}
-                                    // onSessionsLoad={handleSessionsLoad}
+                                    onSessionsLoad={handleSessionsLoad}
                                 />
                             ))}
                         </div>

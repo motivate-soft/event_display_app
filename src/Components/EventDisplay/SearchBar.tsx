@@ -4,6 +4,7 @@ import SearchInput from './SearchInput';
 import SearchTermsBox from './SearchTermsBox';
 
 interface SearchBarProps {
+    count: number;
     term: string;
     terms: string[];
     onInputChange(event: React.ChangeEvent<HTMLInputElement>): void;
@@ -13,14 +14,23 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
-    const { term, terms, onInputChange, onInputPress, onRemoveTerm, onRemoveAllTerms } = props;
+    const {
+        count,
+        term,
+        terms,
+        onInputChange,
+        onInputPress,
+        onRemoveTerm,
+        onRemoveAllTerms
+    } = props;
     return (
         <div className="search-bar">
             <Row>
-                <Col sm={6} lg={4}>
+                <Col sm={6} md={4} lg={3}>
+                    <h5>{count} Sessions</h5>
                     <SearchInput value={term} onChange={onInputChange} onKeyPress={onInputPress} />
                 </Col>
-                <Col sm={6} lg={8}>
+                <Col sm={6} md={8} lg={9}>
                     {terms && terms.length > 0 ? (
                         <SearchTermsBox
                             terms={terms}
